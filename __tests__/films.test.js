@@ -50,30 +50,12 @@ describe('Film routes', () => {
 
   it('gets a film by id', async() => {
     const film = await getFilm();
-    // need filmss as well since we are populating in route
-    // const filmss = await getfilmss({ actorId: actor._id });
 
     return request(app)
       .get(`/api/v1/films/${film._id}`)
       .then(res => {
         expect(res.body).toEqual({
           ...film,
-        //   {
-        //     title,
-        //     released,
-        //     studio: { _id, name },
-        //     cast: [{
-        //         _id,
-        //         role,
-        //         actor: { _id, name }
-        //     }],
-        //     reviews: [{
-        //         id,
-        //         rating,
-        //         review,
-        //         reviewer: { _id, name }
-        //     ]
-        // }
         });
       });
   });
