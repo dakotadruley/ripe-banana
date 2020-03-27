@@ -1,8 +1,10 @@
 require('dotenv').config();
-const { getFilm, 
-  getFilms, 
+const { getFilm,
+  getFilms,  
   getActor,
-  getStudio } = require('../db/data-helpers');
+  getStudio,
+  getStudios,
+  getReviews } = require('../db/data-helpers');
 const request = require('supertest');
 const app = require('../lib/app');
 
@@ -39,12 +41,21 @@ describe('Film routes', () => {
   });
 
   it('gets all films', async() => {
+    const studios = await getStudios();
     const films = await getFilms();
+    const filmsWithStudions = films.map(film => {
+      const studio = studios.find(studio => studio._id === film.studio);
+      delete film.cast;
+      return { 
+        ...film,
+        studio: { _id: studio._id, name: studio.name }
+      };
+    });
 
     return request(app)
       .get('/api/v1/films')
       .then(res => {
-        expect(res.body).toEqual(films);
+        expect(res.body).toEqual(filmsWithStudions);
       });
   });
 
@@ -54,9 +65,8 @@ describe('Film routes', () => {
     return request(app)
       .get(`/api/v1/films/${film._id}`)
       .then(res => {
-        expect(res.body).toEqual({
-          ...film,
-        });
+        expect(res.body).toEqual(film);
       });
   });
+
 });
