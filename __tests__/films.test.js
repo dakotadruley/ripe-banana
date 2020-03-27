@@ -2,7 +2,6 @@ require('dotenv').config();
 const { getFilm, 
   getFilms, 
   getActor,
-  getActors,
   getStudio } = require('../db/data-helpers');
 const request = require('supertest');
 const app = require('../lib/app');
@@ -49,39 +48,33 @@ describe('Film routes', () => {
       });
   });
 
-  //   it('gets a reviewer by id', async() => {
-  //     const reviewer = await getReviewer();
-  //     // need filmss as well since we are populating in route
-  //     // const filmss = await getfilmss({ actorId: actor._id });
+  it('gets a film by id', async() => {
+    const film = await getFilm();
+    // need filmss as well since we are populating in route
+    // const filmss = await getfilmss({ actorId: actor._id });
 
-  //     return request(app)
-  //       .get(`/api/v1/reviewers/${reviewer._id}`)
-  //       .then(res => {
-  //         expect(res.body).toEqual({
-  //           ...reviewer,
-  //           // films - because we populate in route
-  //           // GET /actors/:id
-  //         //   reviews: [{
-  //         //     _id,
-  //         //     rating,
-  //         //     review,
-  //         //     film: { _id, title }
-  //         // }]
-  //         });
-  //       });
-  //   });
-
-  //   it('updates a reviewer by id', async() => {
-  //     const reviewer = await getReviewer();
-
-//     return request(app)
-//       .patch(`/api/v1/reviewers/${reviewer._id}`)
-//       .send({ name: 'Test name' })
-//       .then(res => {
-//         expect(res.body).toEqual({
-//           ...reviewer,
-//           name: expect.any(String)
-//         });
-//       });
-//   });
+    return request(app)
+      .get(`/api/v1/films/${film._id}`)
+      .then(res => {
+        expect(res.body).toEqual({
+          ...film,
+        //   {
+        //     title,
+        //     released,
+        //     studio: { _id, name },
+        //     cast: [{
+        //         _id,
+        //         role,
+        //         actor: { _id, name }
+        //     }],
+        //     reviews: [{
+        //         id,
+        //         rating,
+        //         review,
+        //         reviewer: { _id, name }
+        //     ]
+        // }
+        });
+      });
+  });
 });
