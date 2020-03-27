@@ -11,7 +11,7 @@ describe('Film routes', () => {
   it('creates a film', async() => {
     const studio = await getStudio();
     const actor = await getActor();
-    console.log(studio);
+
     return request(app)
       .post('/api/v1/films') 
       .send({
@@ -30,6 +30,7 @@ describe('Film routes', () => {
           studio: studio._id,
           released: 2009,
           cast: [{
+            _id: expect.any(String),  
             role: 'Lead',
             actor: actor._id
           }],

@@ -31,11 +31,11 @@ module.exports = async({ actorsToCreate = 10, studiosToCreate = 5, reviewersToCr
 
   const films = await Film.create([...Array(filmsToCreate)].map(() => ({
     title: chance.name(),
-    studioId: chance.pickone(studios)._id,
+    studio: chance.pickone(studios)._id,
     released: chance.year(),
     cast: [{
       role: chance.profession(),
-      actorId: chance.pickone(actors)._id
+      actor: chance.pickone(actors)._id
     }]
   })));
 
