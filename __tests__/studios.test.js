@@ -1,16 +1,19 @@
 require('dotenv').config();
-const { getActor, getActors } = require('../db/data-helpers');
+const { getStudio, getStudios } = require('../db/data-helpers');
 const request = require('supertest');
 const app = require('../lib/app');
 
-describe('Actor routes', () => {
+describe('Studio routes', () => {
   it('creates a studio', () => {
     return request(app)
-      .post('/api/v1/actors')
+      .post('/api/v1/studios')
       .send({
-        name: 'Actor Test',
-        dob: 'December 17, 1985',
-        pob: 'Test Place',
+        name: 'Studio Test',
+        address: {
+          city: 'LA',
+          state: 'CA',
+          country: 'USA'
+        }
         // films: [{
         //   id, 
         //   title,
@@ -20,34 +23,37 @@ describe('Actor routes', () => {
       .then(res => {
         expect(res.body).toEqual({
           _id: expect.any(String),
-          name: 'Actor Test',
-          dob: '1985-12-17T08:00:00.000Z',
-          pob: 'Test Place',
+          name: 'Studio Test',
+          address: {
+            city: 'LA',
+            state: 'CA',
+            country: 'USA'
+          },
           __v: 0
         });
       });
   });
 
-  it('gets all actors', async() => {
-    const actors = await getActors();
+  it('gets all studios', async() => {
+    const studios = await getStudios();
 
     return request(app)
-      .get('/api/v1/actors')
+      .get('/api/v1/studios')
       .then(res => {
-        expect(res.body).toEqual(actors);
+        expect(res.body).toEqual(studios);
       });
   });
 
   it('gets an actor by id', async() => {
-    const actor = await getActor();
+    const studio = await getStudio();
     // need filmss as well since we are populating in route
     // const filmss = await getfilmss({ actorId: actor._id });
 
     return request(app)
-      .get(`/api/v1/actors/${actor._id}`)
+      .get(`/api/v1/studios/${studio._id}`)
       .then(res => {
         expect(res.body).toEqual({
-          ...actor,
+          ...studio,
           // films - because we populate in route
           // GET /actors/:id
           // {
