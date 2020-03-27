@@ -57,4 +57,18 @@ describe('Reviewer routes', () => {
         });
       });
   });
+
+  it('updates a reviewer by id', async() => {
+    const reviewer = await getReviewer();
+
+    return request(app)
+      .patch(`/api/v1/reviewers/${reviewer._id}`)
+      .send({ name: 'Test name' })
+      .then(res => {
+        expect(res.body).toEqual({
+          ...reviewer,
+          name: expect.any(String)
+        });
+      });
+  });
 });
