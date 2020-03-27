@@ -1,5 +1,5 @@
 require('dotenv').config();
-const { getActor, getActors } = require('../db/data-helpers');
+const { getActor, getActors, getFilms } = require('../db/data-helpers');
 const request = require('supertest');
 const app = require('../lib/app');
 
@@ -11,11 +11,6 @@ describe('Actor routes', () => {
         name: 'Actor Test',
         dob: 'December 17, 1985',
         pob: 'Test Place',
-        // films: [{
-        //   id, 
-        //   title,
-        //   released
-        // }]
       })
       .then(res => {
         expect(res.body).toEqual({
@@ -40,26 +35,14 @@ describe('Actor routes', () => {
 
   it('gets an actor by id', async() => {
     const actor = await getActor();
-    // need filmss as well since we are populating in route
-    // const filmss = await getfilmss({ actorId: actor._id });
+    const films = await getFilms({ 'cast.actor': actor._id });
 
     return request(app)
       .get(`/api/v1/actors/${actor._id}`)
       .then(res => {
         expect(res.body).toEqual({
           ...actor,
-          // films - because we populate in route
-          // GET /actors/:id
-          // {
-          //     name,
-          //     dob,
-          //     pob,
-          //     films: [{
-          //       id,
-          //       title,
-          //       released
-          //     }]
-          // }
+          films
         });
       });
   });
