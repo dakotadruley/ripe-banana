@@ -16,7 +16,7 @@ describe('Actor routes', () => {
         expect(res.body).toEqual({
           _id: expect.any(String),
           name: 'Actor Test',
-          dob: '1985-12-17T08:00:00.000Z',
+          dob: expect.any(String),
           pob: 'Test Place',
           __v: 0
         });
