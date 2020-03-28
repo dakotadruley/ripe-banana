@@ -4,7 +4,7 @@ const request = require('supertest');
 const app = require('../lib/app');
 
 describe('Actor routes', () => {
-  it('creates a studio', () => {
+  it('creates an actor', () => {
     return request(app)
       .post('/api/v1/actors')
       .send({
